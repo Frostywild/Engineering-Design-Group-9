@@ -38,25 +38,25 @@ void setup(void){
   radio.openWritingPipe(pipe);        //sets the address of the receiver to which the program will send data.
   radio.setPALevel(RF24_PA_MAX);      //You can set this as minimum or maximum depending on the distance between the transmitter and receiver.
   radio.setChannel(90);
+  radio.stopListening();
 }
 
 void loop(void){
 
-  radio.stopListening();
   flex_5_val = analogRead(flex_5); 
-  flex_5_val = map(flex_5_val, 0, 1023, 0, 180);
+  flex_5_val = map(flex_5_val, 0, 1023, 10, 170);
   /*
   flex_4_val = analogRead(flex_4);
-  flex_4_val = map(flex_4_val, 0, 1023, 0, 179);
+  flex_4_val = map(flex_4_val, 0, 1023, 10, 170);
  
   flex_3_val = analogRead(flex_3);
-  flex_3_val = map(flex_3_val, 0, 1023, 0, 179);
+  flex_3_val = map(flex_3_val, 0, 1023, 10, 170);
  
   flex_2_val = analogRead(flex_2);
-  flex_2_val = map(flex_2_val, 0, 1023, 0, 179);
+  flex_2_val = map(flex_2_val, 0, 1023, 10, 170);
   
   flex_1_val = analogRead(flex_1);
-  flex_1_val = map(flex_1_val, 0, 1023, 0, 179);
+  flex_1_val = map(flex_1_val, 0, 1023, 10, 170);
   */
   
   msg[0] = flex_5_val;
