@@ -24,8 +24,6 @@ int msg[5];
 
 void setup(){
 
-  pinMode(LED, OUTPUT);
-
    
   //define the servo input pins
   myServo1.attach(15); //A1
@@ -40,34 +38,24 @@ void setup(){
   radio.begin();                    //it activates the modem.
   radio.setDataRate( RF24_250KBPS );
   radio.openReadingPipe(1, pipe);   //determines the address of our modem which receive data.
-  //radio.startListening();   //enable receiving data via modem
+  radio.startListening();   //enable receiving data via modem
   radio.setPALevel(RF24_PA_MAX);       //You can set this as minimum or maximum depending on the distance between the transmitter and receiver.
   radio.setChannel(90);
+  
   }
 
 
 void loop(){
-
-   radio.startListening();
-   digitalWrite(3, HIGH);
-    while (radio.available())
-    {
-      if(radio.available()){
-        digitalWrite(3, HIGH);
+  
     
         radio.read(&msg, sizeof(msg));
   //Index Finer
         myServo1.write(msg[0]); //A1
         myServo2.write(msg[0]); //A2
         
-        }
-      else if(!radio.available())
-      {
-        digitalWrite(3, LOW);
-      }
+     
   
-    }
-//delay(10);
+delay(10);
 }
    
 /*
@@ -79,4 +67,3 @@ void loop(){
     myServo5.write(msg[3]); //A5
     myServo6.write(msg[3]); //A6
  */
-   
