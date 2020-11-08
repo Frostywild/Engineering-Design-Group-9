@@ -12,15 +12,17 @@
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 //define the servo name
+#define SERVOMIN  125 // this is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  575 // this is the 'maximum' pulse length count (out of 4096)
 
 RF24 radio(9,10);     /*This object represents a modem connected to the Arduino. 
                       Arguments 9 and 10 are a digital pin numbers to which signals 
                       CE and CSN are connected.*/
-
+int angleToPulse(int ang);
 const uint64_t pipe = 0xE8E8F0F0E1LL; //the address of the modem,that will receive data from the Arduino.
 
 int msg[5];
-
+uint8_t servonum = 0;
 void setup(){
 
    
