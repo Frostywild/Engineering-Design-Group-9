@@ -3,7 +3,9 @@
 #include <SPI.h>    //the communication interface with the modem
 #include "RF24.h"                     //the library which helps us to control the radio modem
 #include <nRF24L01.h>
+#include <Adafruit_PWMServoDriver.h>
 
+uint8_t servonum = 0;
 
 int msg[5]; //Total number of data to be sent (data package)
 
@@ -39,13 +41,17 @@ void setup(void){
   radio.setPALevel(RF24_PA_MAX);      //You can set this as minimum or maximum depending on the distance between the transmitter and receiver.
   radio.setChannel(90);
   radio.stopListening();
+  
+  pwm.begin();
+  
+  pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
 }
 
 void loop(void){
 
   flex_5_val = analogRead(flex_5); 
-  flex_5_val = map(flex_5_val, 1023, 0, 10, 180);
-  /*
+  flex_5_val = map(flex_5_val, 0, 1023, 10, 170);
+  
   flex_4_val = analogRead(flex_4);
   flex_4_val = map(flex_4_val, 0, 1023, 10, 170);
  
@@ -57,15 +63,28 @@ void loop(void){
   
   flex_1_val = analogRead(flex_1);
   flex_1_val = map(flex_1_val, 0, 1023, 10, 170);
-  */
+  
   
   msg[0] = flex_5_val;
-  /*
+  
   msg[1] = flex_4_val;
   msg[2] = flex_3_val;
   msg[3] = flex_2_val;
   msg[4] = flex_1_val;
-  */
-  radio.write(&msg, sizeof(msg));
+  
+//radio.read(&msg, sizeof(msg));
+  //Index Finer
+  int x=0;
+  for(int i=0; i<10; i+2)
+  {
+
+    delay(50);
+    pwm.setPWM(i, 0, msg[x] );
+    pwm.setPWM(i+1, 0, msg[x]);
+    // see YouTube video for details (robojax)
+    x++;
+       
+  }
+  x=0;
   
 }
