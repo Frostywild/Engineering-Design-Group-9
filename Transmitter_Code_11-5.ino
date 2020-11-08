@@ -1,5 +1,6 @@
 //Transmitter Code (Glove) - Mert Arduino and Tech
 
+#include <Wire.h>
 #include <SPI.h>    //the communication interface with the modem
 #include "RF24.h"                     //the library which helps us to control the radio modem
 #include <nRF24L01.h>
