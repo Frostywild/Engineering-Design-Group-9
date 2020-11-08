@@ -10,14 +10,7 @@
 
 
 
-#define LED 3
 //define the servo name
-Servo myServo1;
-Servo myServo3;
-Servo myServo4;
-Servo myServo2;
-Servo myServo5;
-Servo myServo6;
 
 RF24 radio(9,10);     /*This object represents a modem connected to the Arduino. 
                       Arguments 9 and 10 are a digital pin numbers to which signals 
@@ -42,6 +35,11 @@ void setup(){
   radio.setPALevel(RF24_PA_MAX);       //You can set this as minimum or maximum depending on the distance between the transmitter and receiver.
   radio.setChannel(90);
   
+  Serial.println("16 channel Servo test!");
+
+  pwm.begin();
+  
+  pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
   }
 
 
