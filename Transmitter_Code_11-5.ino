@@ -6,6 +6,8 @@
 #include <nRF24L01.h>
 #include <Adafruit_PWMServoDriver.h>
 
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
 uint8_t servonum = 0;
 
 int msg[5]; //Total number of data to be sent (data package)
