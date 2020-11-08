@@ -1,6 +1,6 @@
  
  /*
- * Original sourse: https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
+ * Original source: https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
  * 
  * This is the Arduino code PAC6985 16 channel servo controller
  * watch the video for details (V1) and demo http://youtu.be/y8X9X10Tn1k
