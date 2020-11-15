@@ -74,8 +74,6 @@ void loop() {
   msg[2] = flexVal3;
   msg[3] = flexVal4;
   msg[4] = flexVal5;
-for(int i = 0; i< 16; i++){
-
 
    //Thumb
   pwm.setPWM(0, 0, angleToPulse(msg[0]));
@@ -96,7 +94,6 @@ for(int i = 0; i< 16; i++){
   //Thumb Movement 
   //pwm.setPWM(10, 0, angleToPulse(msg[5]));
   delay(10);
-  }
 }
 
 int angleToPulse(int ang){
