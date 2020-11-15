@@ -1,7 +1,9 @@
-#include <I2Cdev.h>
-#include <PCA9685.h>
+#include <Adafruit_PWMServoDriver.h>
+
+
 #include <Wire.h>
 
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 //de
 ServoDriver servo;
@@ -18,7 +20,8 @@ void setup()
   // join I2C bus (I2Cdev library doesn't do this automatically)
   Wire.begin();
   Serial.begin(9600);
-  
+  pwm.begin();
+  pwm.setPWMFreq(60);
   servo.init(0x7f);
   
   pinMode(FlexSensor_1, INPUT);
@@ -45,17 +48,21 @@ void loop()
   sensor_value[4] = analogRead(FlexSensor_5);
 */
 
-  angle[0] = (float)sensor_value[0] * 300 / 1023;
-  angle[1] = (float)sensor_value[1] * 300 / 1023;
-  angle[2] = (float)sensor_value[2] * 300 / 1023;
-  angle[3] = (float)sensor_value[3] * 300 / 1023;
+for (int x=0; x<10; x++){
+  
+}
+
+  angle[0] = map(angle[0], 600, 900, 0, 180)
+  //angle[1] = (float)sensor_value[1] * 300 / 1023;
+ // angle[2] = (float)sensor_value[2] * 300 / 1023;
+//  angle[3] = (float)sensor_value[3] * 300 / 1023;
   Serial.println(angle[0]);
 
-  servo.setAngle(12, map(angle[0], 0, 300, 0, 170));
-  servo.setAngle(13, map(angle[1], 0, 300, 0, 180));
-  servo.setAngle(14, map(angle[2], 0, 300, 20, 180));
-  servo.setAngle(15, map(angle[3], 0, 300, 20, 160));
-  delay(15);
+pwm.setPWM(0,0,angelToPulse(angle[0]);
+//  servo.setAngle(1, map(angle[0], 600, 900, 0, 180));
+//  servo.setAngle(2, map(angle[0], 600, 900, 0, 180));
+//  servo.setAngle(3, map(angle[0], 600, 900, 0, 180));
+  delay(20);
 
 
 }
