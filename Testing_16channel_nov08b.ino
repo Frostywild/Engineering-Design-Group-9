@@ -1,6 +1,6 @@
  
  /*
- * Original source: https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
+ * Original sourse: https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
  * 
  * This is the Arduino code PAC6985 16 channel servo controller
  * watch the video for details (V1) and demo http://youtu.be/y8X9X10Tn1k
@@ -63,6 +63,7 @@ or make donation using PayPal http://robojax.com/L/?id=64
  ****************************************************/
 
 #include <Wire.h>
+#include <Servo.h>
 #include <Adafruit_PWMServoDriver.h>
 
 // called this way, it uses the default address 0x40
@@ -78,15 +79,30 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define SERVOMIN  125 // this is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX  575 // this is the 'maximum' pulse length count (out of 4096)
 
+int msg[5]; 
+
 // our servo # counter
 uint8_t servonum = 0;
+//define the Flex Sensor Input pins
+int flexPin1 = A0;
+int flexPin2 = A1;
+int flexPin3 = A2;
+int flexPin4 = A3;
+int flexPin5 = A6;
+//Define Variables for Flex Sensor Values 
+int flexVal1;
+int flexVal2;
+int flexVal3;
+int flexVal4;
+int flexVal5;
+
+int angleToPulse(int ang);
 
 void setup() {
   Serial.begin(9600);
   Serial.println("16 channel Servo test!");
 
   pwm.begin();
-  
   pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
 
   //yield();
@@ -95,12 +111,50 @@ void setup() {
 // the code inside loop() has been updated by Robojax
 void loop() {
 
-//watch video for details: https://youtu.be/bal2STaoQ1M
+  flexVal1 = analogRead(flexPin1);
+  flexVal1 = map(flexVal1, 0, 1023, 10, 180);
+
+  msg[0] = flexVal1;
+  msg[1] = flexVal2;
+  msg[2] = flexVal3;
+  msg[3] = flexVal4;
+  msg[4] = flexVal5;
+for(int i = 0; i< 16; i++){
+  delay(50);
+  pwm.setPWM(6, 0, msg[0]);
+  pwm.setPWM(7, 0, msg[0]);
+  }
+}
+/*
 for(int i=0; i<16; i++)
   {
-    for( int angle =0; angle<181; angle +=10){
+    //ADDED PART TO TEST 
+    int flexValue;
+    int servoPosition;
+    int servoPosition2;
+    
+    flexValue = analogRead(flexPin1);
+    
+    //pwm.setPWM(6, 0, angleToPulse() );
+     servoPosition = map(flexValue, 900, 800, 0, 180);
+    for(flexValue = 0; flexValue <180; flexValue ++);
+    {
       delay(50);
-        pwm.setPWM(i, 0, angleToPulse(angle) );
+      
+       pwm.setPWM(6, 0, flexValue);
+       pwm.setPWM(7, 0, flexValue);
+
+    }
+    
+    
+    
+    for( int angle =0; angle<181; angle +=10){
+       delay(50);
+
+        
+        pwm.setPWM(6, 0, angleToPulse(angle) );
+        pwm.setPWM(7, 0, angleToPulse(angle) );
+
         // see YouTube video for details (robojax)
        
     }
@@ -111,6 +165,8 @@ for(int i=0; i<16; i++)
   delay(1000);// wait for 1 second
  
 }
+*/
+
 
 /*
 /* angleToPulse(int ang)
@@ -122,6 +178,7 @@ for(int i=0; i<16; i++)
  * in Ajax, Ontario, Canada
  * www.Robojax.com 
  */
+
  
 int angleToPulse(int ang){
    int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
