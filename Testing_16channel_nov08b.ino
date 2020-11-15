@@ -90,6 +90,7 @@ int flexPin3 = A2;
 int flexPin4 = A3;
 int flexPin5 = A6;
 //Define Variables for Flex Sensor Values 
+
 int flexVal1;
 int flexVal2;
 int flexVal3;
@@ -112,7 +113,8 @@ void setup() {
 void loop() {
 
   flexVal1 = analogRead(flexPin1);
-  flexVal1 = map(flexVal1, 0, 1023, 10, 180);
+  flexVal1 = map(flexVal1, 800, 900, 10, 170);
+  flexVal1 = constrain(flexVal1, 0, 170);
 
   msg[0] = flexVal1;
   msg[1] = flexVal2;
