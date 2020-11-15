@@ -121,8 +121,8 @@ void loop() {
   msg[4] = flexVal5;
 for(int i = 0; i< 16; i++){
   delay(50);
-  pwm.setPWM(6, 0, msg[0]);
-  pwm.setPWM(7, 0, msg[0]);
+  pwm.setPWM(6, 0, angleToPulse(msg[0]));
+  pwm.setPWM(7, 0, angleToPulse(msg[0]));
   }
 }
 /*
