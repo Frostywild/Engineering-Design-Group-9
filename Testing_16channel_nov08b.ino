@@ -45,25 +45,31 @@ void setup() {
   //yield();
 }
 
-// the code inside loop() has been updated by Robojax
+// the code inside loop() has been updated by Group 9
 void loop() {
-  //Thumb
+
+  //these blcoks of code get the vales from the flex sensors and constrains them to a 10 - 170 degree value
+  //Thumb Value
   flexVal1 = analogRead(flexPin1);
   flexVal1 = map(flexVal1, 800, 900, 10, 170);
   flexVal1 = constrain(flexVal1, 0, 170);
-  //Index
+  
+  //Index Value
   flexVal2 = analogRead(flexPin2);
   flexVal2 = map(flexVal2, 800, 900, 10, 170);
   flexVal2 = constrain(flexVal2, 0, 170);
-  //Middle
+  
+  //Middle Value
   flexVal3 = analogRead(flexPin3);
   flexVal3 = map(flexVal3, 800, 900, 10, 170);
   flexVal3 = constrain(flexVal3, 0, 170);
-  //Ring
+  
+  //Ring Value
   flexVal4 = analogRead(flexPin4);
   flexVal4 = map(flexVal4, 800, 900, 10, 170);
   flexVal4 = constrain(flexVal4, 0, 170);
-  //Pinky
+  
+  //Pinky Value
   flexVal5 = analogRead(flexPin5);
   flexVal5 = map(flexVal5, 800, 900, 10, 170);
   flexVal5 = constrain(flexVal5, 0, 170);
@@ -75,19 +81,21 @@ void loop() {
   msg[3] = flexVal4;
   msg[4] = flexVal5;
 
-   //Thumb
+    //This Code sends the changed pulse value to the servo motors so they are in the correct position
+    
+   //Thumb Control
   pwm.setPWM(0, 0, angleToPulse(msg[0]));
   pwm.setPWM(1, 0, angleToPulse(msg[0]));
-  //Index
+  //Index Control
   pwm.setPWM(2, 0, angleToPulse(msg[1]));
   pwm.setPWM(3, 0, angleToPulse(msg[1]));
-  //Middle
+  //Middle Control
   pwm.setPWM(4, 0, angleToPulse(msg[2]));
   pwm.setPWM(5, 0, angleToPulse(msg[2]));
-  //Ring
+  //Ring Control
   pwm.setPWM(6, 0, angleToPulse(msg[3]));
   pwm.setPWM(7, 0, angleToPulse(msg[3]));
-  //Pinky
+  //Pinky Control
   pwm.setPWM(8, 0, angleToPulse(msg[4]));
   pwm.setPWM(9, 0, angleToPulse(msg[4]));
 
@@ -96,11 +104,10 @@ void loop() {
   delay(10);
 }
 
+//Changes a degree value to a pulse value for the flex sensor
 int angleToPulse(int ang){
    int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
    Serial.print("Angle: ");Serial.print(ang);
    Serial.print(" pulse: ");Serial.println(pulse);
    return pulse;
 }
-  
- 
