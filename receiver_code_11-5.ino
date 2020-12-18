@@ -7,38 +7,26 @@
 #include <nRF24L01.h>
 #include "PCA9685.h"
 #include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
 
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
-
-#define LED 3
 //define the servo name
-Servo myServo1;
-Servo myServo3;
-Servo myServo4;
-Servo myServo2;
-Servo myServo5;
-Servo myServo6;
+#define SERVOMIN  125 // this is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  575 // this is the 'maximum' pulse length count (out of 4096)
 
 RF24 radio(9,10);     /*This object represents a modem connected to the Arduino. 
                       Arguments 9 and 10 are a digital pin numbers to which signals 
                       CE and CSN are connected.*/
-
+int angleToPulse(int ang);
 const uint64_t pipe = 0xE8E8F0F0E1LL; //the address of the modem,that will receive data from the Arduino.
 
 int msg[5];
-
+uint8_t servonum = 0;
 void setup(){
 
    
   //define the servo input pins
-  myServo1.attach(15); //A1
-  myServo2.attach(16); //A2
-  myServo3.attach(17); //A3
-  myServo4.attach(18); //A4
-  myServo5.attach(19); //A5
-  myServo6.attach(20); //
-
-  //servo.init(0x7f);
 
   
   Serial.begin(9600);
@@ -50,18 +38,35 @@ void setup(){
   radio.setPALevel(RF24_PA_MAX);       //You can set this as minimum or maximum depending on the distance between the transmitter and receiver.
   radio.setChannel(90);
   
+  Serial.println("16 channel Servo test!");
+
+  pwm.begin();
+  
+  pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
   }
 
 
 void loop(){
-        while(radio.available()){
-        radio.read(&msg, sizeof(msg));
+  while(radio.available()){
+  
+    
+  radio.read(&msg, sizeof(msg));
   //Index Finer
-        myServo1.write(msg[0]); //A1
-        myServo2.write(msg[0]); //A2
-        }
-  //delay(10);
+  int x=0;
+  for(int i=0; i<10; i+2)
+  {
 
+    delay(50);
+    pwm.setPWM(i, 0, angleToPulse(msg[x]) );
+    pwm.setPWM(i+1, 0, angleToPulse(msg[x]) );
+    // see YouTube video for details (robojax)
+    x++;
+       
+  }
+  x=0;
+     
+  
+delay(10);
 }
    
 /*
@@ -73,3 +78,9 @@ void loop(){
     myServo5.write(msg[3]); //A5
     myServo6.write(msg[3]); //A6
  */
+int angleToPulse(int ang){
+   int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
+   Serial.print("Angle: ");Serial.print(ang);
+   Serial.print(" pulse: ");Serial.println(pulse);
+   return pulse;
+}

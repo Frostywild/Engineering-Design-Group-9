@@ -52,7 +52,18 @@ void loop(){
   //Index Finer
         myServo1.write(msg[0]); //A1
         myServo2.write(msg[0]); //A2
-        
+  int x=0;
+  for(int i=0; i<10; i+2)
+  {
+
+    delay(50);
+    pwm.setPWM(i, 0, angleToPulse(msg[x]) );
+    pwm.setPWM(i+1, 0, angleToPulse(msg[x]) );
+    // see YouTube video for details (robojax)
+    x++;
+       
+  }
+  x=0;
      
   
 delay(10);
@@ -67,3 +78,9 @@ delay(10);
     myServo5.write(msg[3]); //A5
     myServo6.write(msg[3]); //A6
  */
+int angleToPulse(int ang){
+   int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
+   Serial.print("Angle: ");Serial.print(ang);
+   Serial.print(" pulse: ");Serial.println(pulse);
+   return pulse;
+}
